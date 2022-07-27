@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
+
 import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Paper from '@mui/material/Paper'
@@ -20,9 +21,9 @@ export const Login = () => {
   } = useForm({
     defaultValues: {
       email: 'test@test.ru',
-      password: '12345',
+      password: '123',
     },
-    mode: 'all',
+    mode: 'onChange',
   })
 
   const onSubmit = async (values) => {
@@ -32,11 +33,11 @@ export const Login = () => {
       return alert('Не удалось авторизоваться!')
     }
 
-    if ('toke' in data.payload) {
+    if ('token' in data.payload) {
       window.localStorage.setItem('token', data.payload.token)
     }
   }
- 
+
   if (isAuth) {
     return <Navigate to="/" />
   }
@@ -52,6 +53,7 @@ export const Login = () => {
           label="E-Mail"
           error={Boolean(errors.email?.message)}
           helperText={errors.email?.message}
+          type="email"
           {...register('email', { required: 'Укажите почту' })}
           fullWidth
         />
